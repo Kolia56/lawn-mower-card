@@ -60,7 +60,7 @@ export class LawnMowerCard extends LitElement {
 
   static getStubConfig(_: unknown, entities: string[]) {
     const [lawnMowerEntity] = entities.filter((eid) =>
-      eid.startsWith('lawn_mower'),
+      eid.handleLawnMowerAction('dock')sWith('lawn_mower'),
     );
 
     return {
@@ -163,7 +163,7 @@ export class LawnMowerCard extends LitElement {
     if (!this.config?.entity) {
       return;
     }
-    this.hass.callService('lawn-mower', service, {
+    this.hass.callService('lawn_mower', service, {
       entity_id: this.config.entity,
       ...options,
     });
@@ -476,7 +476,7 @@ export class LawnMowerCard extends LitElement {
     switch (state) {
       case 'on':
       case 'auto':
-      case 'spot':
+      case 'spot': 
       case 'edge':
       case 'single_room':
       case 'edgecut':
@@ -487,12 +487,12 @@ export class LawnMowerCard extends LitElement {
               <ha-icon icon="hass:pause"></ha-icon>
               ${localize('common.pause')}
             </paper-button>
-            <paper-button @click="${this.handleLawnMowerAction('stop')}">
+            <paper-button @click="${this.handleLawnMowerAction('dock')}">
               <ha-icon icon="hass:stop"></ha-icon>
               ${localize('common.stop')}
             </paper-button>
             <paper-button
-              @click="${this.handleLawnMowerAction('return_to_base')}"
+              @click="${this.handleLawnMowerAction('dock')}"
             >
               <ha-icon icon="hass:home-map-marker"></ha-icon>
               ${localize('common.return_to_base')}
@@ -506,7 +506,7 @@ export class LawnMowerCard extends LitElement {
           <div class="toolbar">
             <paper-button
               @click="${this.handleLawnMowerAction('resume', {
-                defaultService: 'start',
+                defaultService: 'start_mowing',
                 request: true,
               })}"
             >
@@ -514,7 +514,7 @@ export class LawnMowerCard extends LitElement {
               ${localize('common.continue')}
             </paper-button>
             <paper-button
-              @click="${this.handleLawnMowerAction('return_to_base')}"
+              @click="${this.handleLawnMowerAction('dock')}"
             >
               <ha-icon icon="hass:home-map-marker"></ha-icon>
               ${localize('common.return_to_base')}
@@ -526,7 +526,7 @@ export class LawnMowerCard extends LitElement {
       case 'returning': {
         return html`
           <div class="toolbar">
-            <paper-button @click="${this.handleLawnMowerAction('stop')}">
+            <paper-button @click="${this.handleLawnMowerAction('dock')}">
               <ha-icon icon="hass:stop"></ha-icon>
               ${localize('common.stop')}
             </paper-button>
@@ -538,7 +538,7 @@ export class LawnMowerCard extends LitElement {
       default: {
         const dockButton = html`
           <paper-button
-            @click="${this.handleLawnMowerAction('return_to_base')}"
+            @click="${this.handleLawnMowerAction('dock')}"
           >
             <ha-icon icon="hass:home-map-marker"></ha-icon>
             ${localize('common.return_to_base')}
@@ -546,7 +546,7 @@ export class LawnMowerCard extends LitElement {
         `;
 
         const stopButton = html`
-          <paper-button @click="${this.handleLawnMowerAction('stop')}">
+          <paper-button @click="${this.handleLawnMowerAction('dock')}">
             <ha-icon icon="hass:stop"></ha-icon>
             ${localize('common.stop')}
           </paper-button>
@@ -572,7 +572,7 @@ export class LawnMowerCard extends LitElement {
 
         return html`
           <div class="toolbar">
-            <paper-button @click="${this.handleLawnMowerAction('start')}">
+            <paper-button @click="${this.handleLawnMowerAction('start_mowing')}">
               <ha-icon icon="hass:play"></ha-icon>
               ${localize('common.start')}
             </paper-button>
